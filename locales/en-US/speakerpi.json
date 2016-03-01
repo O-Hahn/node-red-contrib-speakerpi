@@ -1,0 +1,9 @@
+{
+    "speakerpi": {
+        "label": {
+            "speakerpi": "SpeakerPi",
+            "channel": "Channel",
+            "bitdepth": "Bit Depth", 
+            "samplerate": "Sample Rate (HZ)"
+        }
+}

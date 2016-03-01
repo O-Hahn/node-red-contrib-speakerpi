@@ -1,0 +1,27 @@
+# Additional install needed
+sudo apt-get install libasound2-dev
+
+npm install speaker
+npm install stream-buffers 
+
+# on local linux
+source ~/.profile
+
+# install package from git
+npm install https://github.com/O-Hahn/node-red-contrib-speakerpi.git
+
+# Node-Red Start on pi
+node-red-pi --max-old-space-size=128 -v
+
+node-red-stop 
+node-red-start
+
+
+#sound set to Analogoutput
+amixer cset numid=3 1
+
+#sound set to HDMI
+amixer cset numid=3 2
+
+# soud set louder
+alsamixer 

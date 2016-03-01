@@ -1,2 +1,2 @@
 # node-red-contrib-speakerpi
-Speaker Node for Raspi
+Node-Red Enhancements for the Speaker Output on Rapspery PI

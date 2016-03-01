@@ -1,0 +1,73 @@
+<!--
+  Copyright 2015 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  Authors:
+     - Olaf Hahn
+-->
+
+
+<!-- Speaer Pi Output Node -->
+<script type="text/x-red" data-template-name="speakerpi-output">
+    <div class="form-row node-input-channel">
+         <label for="node-input-channel"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.channel"></span></label>
+	     <select id="node-input-channel">
+            <option value="1">Mono</option>
+            <option value="2">Stereo</option>
+        </select>
+    </div>
+    <div class="form-row node-input-bitdepth">
+         <label for="node-input-bitdepth"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.bitdepth"></span></label>
+	     <select id="node-input-bitdepth">
+            <option value="8">8 Bit</option>
+            <option value="16">16 Bit</option>
+        </select>
+    </div>
+    <div class="form-row node-input-samplerate">
+         <label for="node-input-samplerate"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.samplerate"></span></label>
+	     <select id="node-input-samplerate">
+            <option value="22050">22050 Hz</option>
+            <option value="44100">44100 Hz</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="speakerpi.label.name"></span></label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="speakerpi-output">
+    <p>This Speaker Output Node for Raspberry PI give the possibility to play Sound-Objects direct through the configured output (HDMI or Chinch). </p>
+    <p>In <b>msg.speech</b> you have to put the WAV or OGG object - which should be played.  </p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('speakerpi-output',{
+        category: 'Raspberry_PI',
+        color: '#C7E9C0',
+        defaults: {
+            channel: {value:"1", required:true},
+            bitdepth: {value:"16", required:true},
+            samplerate: {value:"22050", required:true},
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        icon: "bridge.png",
+        label: function() {
+            return this.name || "speakerpi output node";
+        }
+    });
+</script>
+<!-- End of speakerpi Pi Output Node -->
+

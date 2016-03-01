@@ -1,0 +1,32 @@
+{
+    "name"         : "node-red-contrib-speakerpi",
+    "version"      : "0.0.1",
+    "description"  : "Node Red Nodes for Speaker Output on Raspberry PI",
+    "license"      : "Apache-2.0",
+    "main"		   : "furby.js",
+    "keywords": [ 
+                 "node-red",
+                 "raspi",
+                 "speaker"
+                 ],
+     "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+     },
+     "repository": {
+    	    "type": "git",
+    	    "url": "git@github.com:O-Hahn/node-red-contrib-speakerpi"
+    	    	},
+	 "dependencies": {
+	 	"speaker":"latest",
+	 	"serialport":"2.0.*"
+  	 },
+     "node-red" : {
+        "nodes": {
+            "speakerpi": "speakerpi.js"
+        	}
+    },
+     "author": {
+     	"name": "Olaf Hahn",
+     	"email": "olaf@fam-hahn.com"
+  }
+}
