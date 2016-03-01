@@ -70,6 +70,7 @@ module.exports = function(RED) {
 			} else {
 				node.error("SpeakerPI: No msg.speech object found")
 			}
+            node.status({fill:"green",shape:"ring",text:"node-red:common.status.connected"});
         });
         
         // SpeakerPi is ready
