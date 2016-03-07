@@ -19,9 +19,9 @@
 
 <!-- Speaer Pi Output Node -->
 <script type="text/x-red" data-template-name="speakerpi-output">
-    <div class="form-row node-input-channel">
-         <label for="node-input-channel"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.channel"></span></label>
-	     <select id="node-input-channel">
+    <div class="form-row node-input-channels">
+         <label for="node-input-channels"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.channel"></span></label>
+	     <select id="node-input-channels">
             <option value="1">Mono</option>
             <option value="2">Stereo</option>
         </select>
@@ -56,7 +56,7 @@
         category: 'Raspberry_Pi',
         color: '#A6BBCF',
         defaults: {
-            channel: {value:"1", required:true},
+            channels: {value:"1", required:true},
             bitdepth: {value:"16", required:true},
             samplerate: {value:"22050", required:true},
             name: {value:""}

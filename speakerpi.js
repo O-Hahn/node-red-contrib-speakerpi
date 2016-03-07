@@ -18,16 +18,16 @@
 
 
 // give the stream out on the audio 
-function speakOutput(node, outStream) {
+function speakOutput(outStream, speakerConfig) {
 	// include needed libs
 	var Readable = require('stream').Readable;
 	var Speaker = require("speaker");
 	
 	// Create the Speaker instance
 	var speaker = new Speaker({
-	  channels: node.channel,          // 2 channels
-	  bitDepth: node.bitdepth,         // 16-bit samples
-	  sampleRate: node.samplerate     // 44,100 Hz sample rate
+	  channels: speakerConfig.channel,          // 2 channels
+	  bitDepth: speakerConfig.bitdepth,         // 16-bit samples
+	  sampleRate: speakerConfig.samplerate     // 44,100 Hz sample rate
 	});
 
 	// make buffer streamable 
@@ -66,7 +66,12 @@ module.exports = function(RED) {
 
             // check if speech is filled or standard-sound given
 			if (msg.speech) {
-				speakOutput(node, msg.speech);    					
+				var speakerConfig = {
+					channels: msg.speakerConfig.channels || node.channels,          // 2 channels
+					bitdepth: msg.speakerConfig.bitdepth || node.bitdepth,          // 16-bit samples
+					samplesate: msg.speakerConfig.samplerate || node.samplerate     // 44,100 Hz sample rate
+				};
+				speakOutput(msg.speech, speakerConfig);    					
 			} else {
 				node.error("SpeakerPI: No msg.speech object found")
 			}
