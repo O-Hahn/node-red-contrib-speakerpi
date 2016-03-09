@@ -25,7 +25,7 @@ function speakOutput(outStream, speakerConfig) {
 	
 	// Create the Speaker instance
 	var speaker = new Speaker({
-	  channels: speakerConfig.channel,          // 2 channels
+	  channels: speakerConfig.channels,          // 2 channels
 	  bitDepth: speakerConfig.bitdepth,         // 16-bit samples
 	  sampleRate: speakerConfig.samplerate     // 44,100 Hz sample rate
 	});
