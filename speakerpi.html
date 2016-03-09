@@ -40,9 +40,9 @@
             <option value="44100">44100 Hz</option>
         </select>
     </div>
-    <div class="form-row node-input-choice">
-         <label for="node-input-choice"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.choice"></span></label>
-	     <select id="node-input-choice">
+    <div class="form-row node-input-choose">
+         <label for="node-input-choose"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.choice"></span></label>
+	     <select id="node-input-choose">
             <option value="filebased">File based</option>
             <option value="streambased">Stream based</option>
         </select>
@@ -66,7 +66,7 @@
             channels: {value:"1", required:true},
             bitdepth: {value:"16", required:true},
             samplerate: {value:"22050", required:true},
-            choice: {value:"filebased", required:true},
+            choose: {value:"filebased", required:true},
             name: {value:""}
         },
         inputs:1,

@@ -107,7 +107,7 @@ module.exports = function(RED) {
 		this.channel =  config.channel;
 		this.bitdepth =  config.bitdepth;
 		this.samplerate =  config.samplerate;
-		this.choice = config.choice;
+		this.choose = config.choose;
 		this.name =  config.name;
 
 		var node = this;
@@ -123,7 +123,8 @@ module.exports = function(RED) {
 					bitdepth: msg.speakerConfig.bitdepth || node.bitdepth,          // 16-bit samples
 					samplesate: msg.speakerConfig.samplerate || node.samplerate     // 44,100 Hz sample rate
 				};
-				if (node.choice == "filebased") { speakOutputFile(msg.speech, speakerConfig); }
+				
+				if (node.choose == "filebased") { speakOutputFile(msg.speech, speakerConfig); }
 				else { speakOutput(msg.speech, speakerConfig);  }
 				   					
 			} else {
