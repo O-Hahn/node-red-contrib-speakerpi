@@ -104,7 +104,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         
         // set parameters and save locally 
-		this.channel =  config.channel;
+		this.channels =  config.channels;
 		this.bitdepth =  config.bitdepth;
 		this.samplerate =  config.samplerate;
 		this.choose = config.choose;
