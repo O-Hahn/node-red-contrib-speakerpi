@@ -6,6 +6,7 @@
             "bitdepth": "Bit Depth", 
             "samplerate": "Sample Rate (HZ)", 
             "name": "Name",
+            "choice":"Output Choice",
             "none": "none"
         },
        "errors": {

@@ -39,6 +39,57 @@ function speakOutput(outStream, speakerConfig) {
     rs.pipe(speaker);
 };
 
+function speakOutputFile(outStream, speakerConfig) {
+	var Sound = require('node-aplay');
+ 	var fs = require("fs-extra");
+ 	var os = require("os");
+ 	
+ 	var cdat = new new Date().toISOString().replace('T', '-').substr(0, 19);
+ 	var filename = "/furbyspeak/speak-" + cdat +".wav";
+  	
+	var data = outStream;
+ 		
+	if ((typeof data === "object") && (!Buffer.isBuffer(data))) {
+ 			 data = JSON.stringify(data);
+		}
+    if (typeof data === "boolean") { data = data.toString(); }
+    if (typeof data === "number") { data = data.toString(); }
+    if (!Buffer.isBuffer(data)) { data += os.EOL; }
+         
+    data = new Buffer(data);
+          
+     // using "binary" not {encoding:"binary"} to be 0.8 compatible for a while
+     fs.writeFile(filename, data, "binary", function (err) {
+         if (err) {
+             if (err.code === "ENOENT") {
+                 fs.ensureFile(filename, function (err) {
+                     if (err) { 
+                     	console.error("Furby Speak (err): File "+ filename + " could not be created");
+                     }
+                     else {
+                         fs.writeFile(filename, data, "binary", function (err) {
+                             if (err) { 
+                             	console.error("Furby Speak (err): File " + filename + " could not be written to");
+                             	}
+                         });
+                     }
+                 });
+             }
+             else { 
+             	console.error("Furby Speak (err): error writing " + err);
+             }
+         }
+         else { 
+         	console.log("Furby Speak (log): File " + filename + " written.");
+         	}
+     });
+
+	// fire and forget: 
+	new Sound(filename).play();
+
+};
+
+
 module.exports = function(RED) {
     "use strict";
     
@@ -56,6 +107,7 @@ module.exports = function(RED) {
 		this.channel =  config.channel;
 		this.bitdepth =  config.bitdepth;
 		this.samplerate =  config.samplerate;
+		this.choice = config.choice;
 		this.name =  config.name;
 
 		var node = this;
@@ -71,7 +123,9 @@ module.exports = function(RED) {
 					bitdepth: msg.speakerConfig.bitdepth || node.bitdepth,          // 16-bit samples
 					samplesate: msg.speakerConfig.samplerate || node.samplerate     // 44,100 Hz sample rate
 				};
-				speakOutput(msg.speech, speakerConfig);    					
+				if (node.choice == "filebased") { speakOutputFile(msg.speech, speakerConfig); }
+				else { speakOutput(msg.speech, speakerConfig);  }
+				   					
 			} else {
 				node.error("SpeakerPI: No msg.speech object found")
 			}
