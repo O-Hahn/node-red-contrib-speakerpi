@@ -45,10 +45,12 @@ function speakOutputFile(outStream, speakerConfig) {
  	var os = require("os");
  	
  	var cdat = new new Date().toISOString().replace('T', '-').substr(0, 19);
- 	var filename = "/furbyspeak/speak-" + cdat +".wav";
+ 	var filename = "/furbyspeak/speak-" + cdat +".wav";#
   	
 	var data = outStream;
  		
+ 	console.log("SpeakOutputFile:"+ filename);
+ 	
 	if ((typeof data === "object") && (!Buffer.isBuffer(data))) {
  			 data = JSON.stringify(data);
 		}
