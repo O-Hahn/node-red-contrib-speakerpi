@@ -119,9 +119,9 @@ module.exports = function(RED) {
             // check if speech is filled or standard-sound given
 			if (msg.speech) {
 				var speakerConfig = {
-					channels: msg.speakerConfig.channels || node.channels,          // 2 channels
-					bitdepth: msg.speakerConfig.bitdepth || node.bitdepth,          // 16-bit samples
-					samplesate: msg.speakerConfig.samplerate || node.samplerate     // 44,100 Hz sample rate
+					channels: node.channels,          // 2 channels
+					bitdepth: node.bitdepth,          // 16-bit samples
+					samplesate: node.samplerate       // 44,100 Hz sample rate
 				};
 				
 				if (node.choose == "filebased") { speakOutputFile(msg.speech, speakerConfig); }
