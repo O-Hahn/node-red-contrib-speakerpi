@@ -26,8 +26,8 @@ function speakOutput(outStream, speakerConfig) {
 	// Create the Speaker instance
 	var speaker = new Speaker({
 	  channels: speakerConfig.channels,          // 2 channels
-	  bitDepth: speakerConfig.bitdepth,         // 16-bit samples
-	  sampleRate: speakerConfig.samplerate     // 44,100 Hz sample rate
+	  bitDepth: speakerConfig.bitdepth,          // 16-bit samples
+	  sampleRate: speakerConfig.samplerate       // 44,100 Hz sample rate
 	});
 
 	// make buffer streamable 
@@ -39,13 +39,13 @@ function speakOutput(outStream, speakerConfig) {
     rs.pipe(speaker);
 };
 
-function speakOutputFile(outStream, speakerConfig) {
+function speakOutputFile(outStream) {
 	var Sound = require('node-aplay');
  	var fs = require("fs-extra");
  	var os = require("os");
  	
  	var cdat = new new Date().toISOString().replace('T', '-').substr(0, 19);
- 	var filename = "/furbyspeak/speak-" + cdat +".wav";#
+ 	var filename = "speak-" + cdat +".wav";
   	
 	var data = outStream;
  		
@@ -126,7 +126,7 @@ module.exports = function(RED) {
 					samplesate: node.samplerate       // 44,100 Hz sample rate
 				};
 				
-				if (node.choose == "filebased") { speakOutputFile(msg.speech, speakerConfig); }
+				if (node.choose == "filebased") { speakOutputFile(msg.speech); }
 				else { speakOutput(msg.speech, speakerConfig);  }
 				   					
 			} else {
