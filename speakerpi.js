@@ -44,7 +44,8 @@ function speakOutputFile(outStream) {
  	var fs = require("fs-extra");
  	var os = require("os");
  	
- 	var cdat = new new Date().toISOString().replace('T', '-').substr(0, 19);
+ 	// var cdat = new Date().toISOString().replace('T', '-').substr(0, 19);
+ 	var cdat = new Date().getTime();
  	var filename = "speak-" + cdat +".wav";
   	
 	var data = outStream;
