@@ -1,6 +1,6 @@
 {
     "name"         : "node-red-contrib-speakerpi",
-    "version"      : "0.0.17",
+    "version"      : "0.0.18",
     "description"  : "Node Red Nodes for Speaker Output on Raspberry PI",
     "license"      : "Apache-2.0",
     "main"		   : "speakerpi.js",
@@ -20,6 +20,7 @@
 	 	"speaker": "latest",
 	 	"node-aplay":"latest",
 	 	"fs-extra":"latest",
+	 	"node-uuid":"latest",
 	 	"serialport":"2.0.*"
   	 },
      "node-red" : {
