@@ -35,8 +35,19 @@ function speakOutput(outStream, speakerConfig) {
 	rs.push(outStream);
 	rs.push(null);
  	
+    
+    speaker.on("finish",funciton () {
+    	console.log("Speaker-Out: I am now finished");
+    });
+
+    speaker.on("close",funciton () {
+    	console.log("Speaker-Out: I am now closed");
+    });
+
     // send file to output
     rs.pipe(speaker);
+    
+    return;
 };
 
 function speakOutputFile(outStream) {
