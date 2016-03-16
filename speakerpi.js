@@ -55,7 +55,7 @@ function speakOutputFile(outStream) {
  	var fs = require("fs-extra");
  	var os = require("os");
  	
- 	var filename = "speak-" + new Date() +".wav";
+ 	var filename = "/home/pi/.node-red/speak/speak-" + new Date() +".wav";
   	
 	var data = outStream;
  		
