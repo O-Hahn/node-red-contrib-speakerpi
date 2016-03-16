@@ -36,11 +36,11 @@ function speakOutput(outStream, speakerConfig) {
 	rs.push(null);
  	
     
-    speaker.on("finish",funciton () {
+    speaker.on("finish",function () {
     	console.log("Speaker-Out: I am now finished");
     });
 
-    speaker.on("close",funciton () {
+    speaker.on("close",function () {
     	console.log("Speaker-Out: I am now closed");
     });
 
