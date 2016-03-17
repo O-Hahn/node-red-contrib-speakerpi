@@ -34,19 +34,21 @@ function speakOutput(outStream, speakerConfig) {
 	var rs = new Readable;
 	rs.push(outStream);
 	rs.push(null);
- 	
-    
-    speaker.on("finish",function () {
-    	console.log("Speaker-Out: I am now finished");
-    });
+	
+	rs.on("end", function () {
+	    speaker.on("finish",function () {
+	    	console.log("Speaker-Out: I am now finished");
+	    });
 
-    speaker.on("close",function () {
-    	console.log("Speaker-Out: I am now closed");
-    });
+	    speaker.on("close",function () {
+	    	console.log("Speaker-Out: I am now closed");
+	    });
 
-    // send file to output
-    rs.pipe(speaker);
-    
+	    // send file to output
+	    rs.pipe(speaker);
+		
+	});
+ 	    
     return;
 };
 
@@ -78,29 +80,38 @@ function speakOutputFile(outStream) {
              if (err.code === "ENOENT") {
                  fs.ensureFile(filename, function (err) {
                      if (err) { 
-                     	console.error("Furby Speak (err): File "+ filename + " could not be created");
+                     	console.error("Speaker-Out:  (err): File "+ filename + " could not be created");
                      }
                      else {
                          fs.writeFile(filename, data, "binary", function (err) {
                              if (err) { 
-                             	console.error("Furby Speak (err): File " + filename + " could not be written to");
+                             	console.error("Speaker-Out:  (err): File " + filename + " could not be written to");
                              	}
                          });
                      }
                  });
              }
              else { 
-             	console.error("Furby Speak (err): error writing " + err);
+             	console.error("Speaker-Out: (err): error writing " + err);
              }
          }
          else { 
-         	console.log("Furby Speak (log): File " + filename + " written.");
+         	console.log("Speaker-Out: (log): File " + filename + " written.");
+
+         	// fire and forget: 
+        	new Sound(filename).play();
+        	
+        	music.on('complete', function () {
+        		console.log('Speaker-Out (log): Done with playback!');
+
+        		fs.remove(filename, function(err) {
+            		  if (err) return console.error("Speaker-Out (err): "+ err);
+            		  
+            		  console.log("Speaker-Out (log): remove success!")
+            		});
+        	});
          	}
      });
-
-	// fire and forget: 
-	new Sound(filename).play();
-
 };
 
 
