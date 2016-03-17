@@ -26,6 +26,17 @@
             <option value="streambased">Stream based</option>
         </select>
     </div>
+    <div class="form-row node-input-predefsound">
+         <label for="node-input-predefsound"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.predefsound"></span></label>
+	     <select id="node-input-predefsound">
+            <option value="payload">Soundobject from payload</option>
+            <option value="watson-1">Hi to IBM</option>
+            <option value="watson-2">Ever on ward</option>
+            <option value="watson-3">Marchon</option>
+            <option value="watson-4">Laughting</option>
+            <option value="watson-5">Minions</option>
+        </select>
+    </div>
     <div class="form-row node-input-channels">
          <label for="node-input-channels"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.channel"></span></label>
 	     <select id="node-input-channels">
@@ -64,8 +75,9 @@
         color: '#A6BBCF',
         defaults: {
             choose: {value:"filebased", required:true},
+            predefsound: {value:"payload", required:true},
             channels: {value:"1", required:true},
-            bitdepth: {value:"16", required:true},
+            bitdepth: {value:"8", required:true},
             samplerate: {value:"22050", required:true},
             name: {value:""}
         },

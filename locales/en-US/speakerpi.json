@@ -7,6 +7,7 @@
             "samplerate": "Sample Rate (HZ)", 
             "name": "Name",
             "choose":"Choose Output",
+            "predefsound": "Predefined Sound",
             "none": "none"
         },
        "errors": {
