@@ -19,6 +19,13 @@
 
 <!-- Speaer Pi Output Node -->
 <script type="text/x-red" data-template-name="speakerpi-output">
+    <div class="form-row node-input-choose">
+         <label for="node-input-choose"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.choose"></span></label>
+	     <select id="node-input-choose">
+            <option value="filebased">File based</option>
+            <option value="streambased">Stream based</option>
+        </select>
+    </div>
     <div class="form-row node-input-channels">
          <label for="node-input-channels"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.channel"></span></label>
 	     <select id="node-input-channels">
@@ -40,13 +47,6 @@
             <option value="44100">44100 Hz</option>
         </select>
     </div>
-    <div class="form-row node-input-choose">
-         <label for="node-input-choose"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.choose"></span></label>
-	     <select id="node-input-choose">
-            <option value="filebased">File based</option>
-            <option value="streambased">Stream based</option>
-        </select>
-    </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="speakerpi.label.name"></span></label>
         <input type="text" id="node-input-name">
@@ -63,10 +63,10 @@
         category: 'Raspberry_Pi',
         color: '#A6BBCF',
         defaults: {
+            choose: {value:"filebased", required:true},
             channels: {value:"1", required:true},
             bitdepth: {value:"16", required:true},
             samplerate: {value:"22050", required:true},
-            choose: {value:"filebased", required:true},
             name: {value:""}
         },
         inputs:1,

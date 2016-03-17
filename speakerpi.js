@@ -101,7 +101,7 @@ function speakOutputFile(outStream) {
          	// fire and forget: 
         	new Sound(filename).play();
         	
-        	music.on('complete', function () {
+        	Sound.on('complete', function () {
         		console.log('Speaker-Out (log): Done with playback!');
 
         		fs.remove(filename, function(err) {
