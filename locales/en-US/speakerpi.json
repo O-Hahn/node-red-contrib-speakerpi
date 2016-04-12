@@ -8,6 +8,7 @@
             "name": "Name",
             "choose":"Choose Output",
             "predefsound": "Predefined Sound",
+            "filename": "File Name",
             "none": "none"
         },
        "errors": {

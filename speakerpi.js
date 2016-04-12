@@ -30,19 +30,21 @@ function speakOutput(outStream, speakerConfig) {
 	  sampleRate: speakerConfig.samplerate       // 44,100 Hz sample rate
 	});
 
-	// make buffer streamable 
+	// copy buffer to presave outStream and make buffer streamable 
 	var rs = new Readable;
 	rs.push(outStream);
 	rs.push(null);
 	
-    // send file to output
-    rs.pipe(speaker);
+    // send buffer to speaker 
+	speaker.write(rs);
+	
+    // rs.pipe(speaker);
 	console.log("SpeakerPi (log): Sound is send to speaker.");	
 	    
     return;
 };
 
-function speakOutputFile(outStream,fileopt) {
+function speakOutputFile(outStream,fileopt,givenfile) {
 	var Sound = require('node-aplay');
  	var fs = require("fs-extra");
  	var os = require("os");
@@ -65,11 +67,13 @@ function speakOutputFile(outStream,fileopt) {
     		filename = "/home/pi/.node-red/default/watson-4.wav";  
     	} else if(fileopt == "watson-5") {
     		filename = "/home/pi/.node-red/default/watson-5.wav";
+    	} else if (fileopt == "file") {
+        	filename = givenfile;    		
     	} else {
     		filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav"; 
     	}
     } else {
-     	filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav";          
+     	filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav";              	
     }
     
     console.log("SpeakOutputFile:"+ filename);
@@ -163,6 +167,7 @@ module.exports = function(RED) {
 		this.samplerate =  config.samplerate;
 		this.choose = config.choose;
 		this.predefsound = config.predefsound;
+		this.filename = config.filename;
 		this.name =  config.name;
 
 		var node = this;
@@ -171,24 +176,23 @@ module.exports = function(RED) {
         node.on("input",function(msg) {
             node.status({fill:"green",shape:"dot",text:"node-red:common.status.connected"});
 
-
-            // check if speech is filled or standard-sound given
-			if (msg.speech) {
-				if(msg.predefsound) {
-					this.predefsound = msg.predefsound;
-				}
-				var speakerConfig = {
-					channels: node.channels,          // 2 channels
-					bitdepth: node.bitdepth,          // 16-bit samples
-					samplesate: node.samplerate       // 44,100 Hz sample rate
-				};
-				
-				if (node.choose == "filebased") { speakOutputFile(msg.speech,node.predefsound); }
-				else { speakOutput(msg.speech, speakerConfig);  }
-				   					
-			} else {
-				node.error("SpeakerPI: No msg.speech object found")
+            // check if streambased or filebased 
+			if (node.choose == "filebased") {
+					speakOutputFile(msg.speech,msg.predefsound,msg.filename);					
+			} else {				
+				if (msg.speech) {
+					var speakerConfig = {
+							channels: msg.channels || node.channels,          	// 2 channels
+							bitdepth: msg.bitdepth || node.bitdepth,          	// 16-bit samples
+							samplesate: msg.samplerate || node.samplerate       // 44,100 Hz sample rate
+						};
+					speakOutput(msg.speech, speakerConfig);
+					} else {
+						node.error("SpeakerPI: No msg.speech object found")
+						}
 			}
+			
+			// check if speech is filled or standard-sound given
             node.status({fill:"green",shape:"ring",text:"node-red:common.status.connected"});
         });
         
@@ -203,7 +207,8 @@ module.exports = function(RED) {
         });
             
         // SpeakerPi has a close 
-        this.on("close", function(done) {
+        node.on("close", function(done) {
+        	node.closing = true;
             done();
         });
     }

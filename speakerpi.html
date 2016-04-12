@@ -35,7 +35,11 @@
             <option value="watson-3">Marchon</option>
             <option value="watson-4">Laughting</option>
             <option value="watson-5">Minions</option>
+            <option value="file">File</option>
         </select>
+    </div>
+    <div class="form-row node-input-filename">
+         <label for="node-input-filename"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.filename"></span></label>
     </div>
     <div class="form-row node-input-channels">
          <label for="node-input-channels"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.channel"></span></label>
@@ -66,7 +70,11 @@
 
 <script type="text/x-red" data-help-name="speakerpi-output">
     <p>This Speaker Output Node for Raspberry PI give the possibility to play Sound-Objects direct through the configured output (HDMI or Chinch). </p>
-    <p>In <b>msg.speech</b> you have to put the WAV or OGG object - which should be played.  </p>
+    <p>In <b>msg.speech</b> could be a given object with a WAV or OGG object - which should be played.  </p>
+    <p>When you set a msg.speech with an playable object <b>msg.channels</b>, <b>msg.bitdepth</b>, <b>msg.samplerate </b> can be given if needed. </p>
+    <p>In <b>msg.choose</b> could be changed if needed to "filebased" or "streambased" </p>
+    <p>In <b>msg.predefsound</b> could be set from <b>watson-1</b> to <b>watson-5</b> or <b>file</b> if you also set <b>msg.filename</b> to be played.  </p>
+    <p>By setting <b>msg.filename</b> you can also give a <b>/path/filename.wav</b> to an existing file which should be played.  </p>
 </script>
 
 <script type="text/javascript">
@@ -79,6 +87,7 @@
             channels: {value:"1", required:true},
             bitdepth: {value:"8", required:true},
             samplerate: {value:"22050", required:true},
+            filename : {value:""},
             name: {value:""}
         },
         inputs:1,
