@@ -52,7 +52,7 @@ function speakOutputFile(outStream,fileopt,givenfile) {
  	
  	var uuid = uuid.v4();
  	var filename = "";
- 	var path = "/home/pi/.node-red/node_modules/node-red-contrib-speakerpi/predefsound/";
+ 	var path = "/home/pi/Git/predefsound/";
   	
 	var data = outStream;
  	
