@@ -26,18 +26,6 @@
             <option value="streambased">Stream based</option>
         </select>
     </div>
-    <div class="form-row node-input-predefsound">
-         <label for="node-input-predefsound"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.predefsound"></span></label>
-	     <select id="node-input-predefsound">
-            <option value="payload">Soundobject from payload</option>
-            <option value="watson-1">Hi to IBM</option>
-            <option value="watson-2">Ever on ward</option>
-            <option value="watson-3">Marchon</option>
-            <option value="watson-4">Laughting</option>
-            <option value="watson-5">Minions</option>
-            <option value="file">File</option>
-        </select>
-    </div>
     <div class="form-row node-input-filename">
          <label for="node-input-filename"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.filename"></span></label>
     </div>
@@ -73,8 +61,7 @@
     <p>In <b>msg.speech</b> could be a given object with a WAV or OGG object - which should be played.  </p>
     <p>When you set a msg.speech with an playable object <b>msg.channels</b>, <b>msg.bitdepth</b>, <b>msg.samplerate </b> can be given if needed. </p>
     <p>In <b>msg.choose</b> could be changed if needed to "filebased" or "streambased" </p>
-    <p>In <b>msg.predefsound</b> could be set from <b>watson-1</b> to <b>watson-5</b> or <b>file</b> if you also set <b>msg.filename</b> to be played.  </p>
-    <p>By setting <b>msg.filename</b> you can also give a <b>/path/filename.wav</b> to an existing file which should be played.  </p>
+    <p>By setting <b>msg.filename</b> you can also give a <b>/path/filename.wav</b> to an existing file which should be played or empty when msg.speach should be used.  </p>
 </script>
 
 <script type="text/javascript">
@@ -83,11 +70,10 @@
         color: '#A6BBCF',
         defaults: {
             choose: {value:"filebased", required:true},
-            predefsound: {value:"payload", required:true},
+            filename: {value:"", required:false},
             channels: {value:"1", required:true},
             bitdepth: {value:"8", required:true},
             samplerate: {value:"22050", required:true},
-            filename : {value:""},
             name: {value:""}
         },
         inputs:1,

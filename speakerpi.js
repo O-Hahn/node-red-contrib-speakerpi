@@ -44,7 +44,7 @@ function speakOutput(outStream, speakerConfig) {
     return;
 };
 
-function speakOutputFile(outStream,fileopt,givenfile) {
+function speakOutputFile(outStream,optfile) {
 	var Sound = require('node-aplay');
  	var fs = require("fs-extra");
  	var os = require("os");
@@ -52,36 +52,26 @@ function speakOutputFile(outStream,fileopt,givenfile) {
  	
  	var uuid = uuid.v4();
  	var filename = "";
- 	var path = "/home/pi/Git/predefsound/";
   	
 	var data = outStream;
  	
  	// define the standard sounds if set or temp filename
-    if (fileopt) {
-    	if(fileopt == "watson-1") {
-    		filename = path + "watson-1.wav";  
-    	} else if(fileopt == "watson-2") {
-    		filename = path + "watson-2.wav";
-    	} else if(fileopt == "watson-3") {
-    		filename = path + "watson-3.wav";  
-    	} else if(fileopt == "watson-4") {
-    		filename = path + "watson-4.wav";  
-    	} else if(fileopt == "watson-5") {
-    		filename = path + "watson-5.wav";
-    	} else if (fileopt == "file") {
-        	filename = givenfile;    		
-    	} else {
-    		filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav"; 
-    	}
-    } else {
-     	filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav";              	
-    }
-    
-    console.log("SpeakOutputFile:"+ filename);
+    if (optfile) {
+		filename = optfile;
+		
+ 		// speak out the streamed file or the standard file 
+ 	   	var speak = new Sound(filename);
+ 	   	speak.play();
+ 	   	
+ 	   	speak.on('complete', function () {
+ 	   		console.log('SpeakerPi (log): Done with playback!');
+ 	   	});
 
-    // write soundobject to file 
- 	if (fileopt && fileopt == "payload") {
- 		if ((typeof data === "object") && (!Buffer.isBuffer(data))) {
+    } else {
+    	// create temp file
+    	filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav";              	
+
+     	if ((typeof data === "object") && (!Buffer.isBuffer(data))) {
 			 data = JSON.stringify(data);
 		}
 	   if (typeof data === "boolean") { data = data.toString(); }
@@ -134,17 +124,8 @@ function speakOutputFile(outStream,fileopt,givenfile) {
 	           	});
 	        	}
 	    });
- 	} else {
- 		// speak out the streamed file or the standard file 
- 	   	var speak = new Sound(filename);
- 	   	speak.play();
- 	   	
- 	   	speak.on('complete', function () {
- 	   		console.log('SpeakerPi (log): Done with playback!');
- 	   	});
-
- 	}
-   	
+    }
+    
  	return;
 };
 
@@ -167,7 +148,6 @@ module.exports = function(RED) {
 		this.bitdepth =  config.bitdepth;
 		this.samplerate =  config.samplerate;
 		this.choose = config.choose;
-		this.predefsound = config.predefsound;
 		this.filename = config.filename;
 		this.name =  config.name;
 
@@ -179,7 +159,8 @@ module.exports = function(RED) {
 
             // check if streambased or filebased 
 			if (node.choose == "filebased") {
-					speakOutputFile(msg.speech,msg.predefsound,msg.filename);					
+				var fn = msg.filename || node.filename;
+				speakOutputFile(msg.speech,fn);					
 			} else {				
 				if (msg.speech) {
 					var speakerConfig = {
