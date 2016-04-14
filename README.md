@@ -1,10 +1,9 @@
 # node-red-contrib-speakerpi
-===================================
+
 A <a href="http://nodered.org" target="_new">Node-RED</a> node to give a provided sound (WAV,OGG) out on the defined output (hdmi or chinch or defined).
 This node is designed to work on Raspberry Pi and will be good in using with Watson APIs like text-to-speach to demonstrate cognitive iot.
 
-Install
--------
+## Install
 
 Run the following command in the root directory of your Node-RED install or home directory (usually ~/.node-red).
 
@@ -24,8 +23,7 @@ amixer cset numid=3 2
 alsamixer 
 
 
-Usage
------
+##Usage
 
 Provides a sound-node for sending out a sound to the connected speaker. There are two modes - filebased and streambased. 
 

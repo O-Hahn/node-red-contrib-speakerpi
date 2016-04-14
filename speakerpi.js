@@ -52,21 +52,22 @@ function speakOutputFile(outStream,fileopt,givenfile) {
  	
  	var uuid = uuid.v4();
  	var filename = "";
+ 	var path = "/home/pi/.node-red/node_modules/node-red-contrib-speakerpi/predefsound/";
   	
 	var data = outStream;
  	
  	// define the standard sounds if set or temp filename
     if (fileopt) {
     	if(fileopt == "watson-1") {
-    		filename = "/home/pi/.node-red/default/watson-1.wav";  
+    		filename = path + "watson-1.wav";  
     	} else if(fileopt == "watson-2") {
-    		filename = "/home/pi/.node-red/default/watson-2.wav";
+    		filename = path + "watson-2.wav";
     	} else if(fileopt == "watson-3") {
-    		filename = "/home/pi/.node-red/default/watson-3.wav";  
+    		filename = path + "watson-3.wav";  
     	} else if(fileopt == "watson-4") {
-    		filename = "/home/pi/.node-red/default/watson-4.wav";  
+    		filename = path + "watson-4.wav";  
     	} else if(fileopt == "watson-5") {
-    		filename = "/home/pi/.node-red/default/watson-5.wav";
+    		filename = path + "watson-5.wav";
     	} else if (fileopt == "file") {
         	filename = givenfile;    		
     	} else {
