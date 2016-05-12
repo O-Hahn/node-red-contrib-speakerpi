@@ -49,6 +49,7 @@ function speakOutputFile(outStream,optfile) {
  	var fs = require("fs-extra");
  	var os = require("os");
  	var uuid = require('node-uuid');
+ 	var tempfile = false;
  	
  	var uuid = uuid.v4();
  	var filename = "";
@@ -58,6 +59,7 @@ function speakOutputFile(outStream,optfile) {
  	// define the standard sounds if set or temp filename
     if (optfile) {
 		filename = optfile;
+		tempfile = false;
 		
  		// speak out the streamed file or the standard file 
  	   	var speak = new Sound(filename);
@@ -70,11 +72,12 @@ function speakOutputFile(outStream,optfile) {
     } else {
     	// create temp file
     	filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav";              	
+		tempfile = true;
 
      	if ((typeof data === "object") && (!Buffer.isBuffer(data))) {
 			 data = JSON.stringify(data);
 		}
-	   if (typeof data === "boolean") { data = data.toString(); }
+ 	   if (typeof data === "boolean") { data = data.toString(); }
 	   if (typeof data === "number") { data = data.toString(); }
 	   if (!Buffer.isBuffer(data)) { data += os.EOL; }
 	        
@@ -114,15 +117,15 @@ function speakOutputFile(outStream,optfile) {
 	           		console.log('SpeakerPi (log): Done with playback!');
 
 	           		// delete file - if payload given and tempfile is not needed anymore
-	           		if (fileopt && fileopt == "payload") {
+	           		if (tempfile) {
 	           	   		fs.remove(filename, function(err) {
 	                 		  if (err) return console.error("SpeakerPi (err): "+ err);
 	                 		  
 	                 		  console.log("SpeakerPi (log): remove success!")
-	                 		});	           			
+	                 		});	           				           			
 	           		}
 	           	});
-	        	}
+	        }
 	    });
     }
     
