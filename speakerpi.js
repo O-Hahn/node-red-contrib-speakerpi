@@ -153,6 +153,7 @@ module.exports = function(RED) {
 		this.choose = config.choose;
 		this.filename = config.filename;
 		this.name =  config.name;
+		this.isplaying = false;
 
 		var node = this;
 		
@@ -163,7 +164,13 @@ module.exports = function(RED) {
             // check if streambased or filebased 
 			if (node.choose == "filebased") {
 				var fn = msg.filename || node.filename;
-				speakOutputFile(msg.speech,fn);					
+				if (node.isplaying) {
+					node.error("SpeakerPI: already playing");
+				} else {
+					node.isplaying = true;
+					speakOutputFile(msg.speech,fn);	
+					node.isplaying = false;
+				}
 			} else {				
 				if (msg.speech) {
 					var speakerConfig = {
