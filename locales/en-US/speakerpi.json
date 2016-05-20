@@ -1,6 +1,6 @@
 {
     "speakerpi": {
-        "speakerpi": {
+        "label": {
             "speakerpi": "SpeakerPi",
             "channel": "Channel",
             "bitdepth": "Bit Depth", 

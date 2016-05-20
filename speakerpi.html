@@ -26,25 +26,25 @@
             <option value="streambased">Stream based</option>
         </select>
     </div>
-    <div class="form-row node-input-filename">
+    <div id="filename" class="form-row node-input-filename">
         <label for="node-input-filename"><i class="fa fa-tag"></i> <span data-i18n="speakerpi.label.filename"></span></label>
 		<input type="text" id="node-input-filename">
     </div>
-    <div class="form-row node-input-channels">
+    <div id="channels" class="form-row node-input-channels">
          <label for="node-input-channels"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.channel"></span></label>
 	     <select id="node-input-channels">
             <option value="1">Mono</option>
             <option value="2">Stereo</option>
         </select>
     </div>
-    <div class="form-row node-input-bitdepth">
+    <div id="bitdepth" class="form-row node-input-bitdepth">
          <label for="node-input-bitdepth"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.bitdepth"></span></label>
 	     <select id="node-input-bitdepth">
             <option value="8">8 Bit</option>
             <option value="16">16 Bit</option>
         </select>
     </div>
-    <div class="form-row node-input-samplerate">
+    <div id="samplerate" class="form-row node-input-samplerate">
          <label for="node-input-samplerate"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.samplerate"></span></label>
 	     <select id="node-input-samplerate">
             <option value="22050">22050 Hz</option>
@@ -80,6 +80,25 @@
         inputs:1,
         outputs:0,
         icon: "bridge.png",
+        oneditprepare: function() {
+            $("#node-input-choose").change(function() {
+                var choose = $("#node-input-choose").val();
+                console.log(choose);
+                if (choose == "filebased") {
+                	chonsole.log("filebased");
+                	$("#filename").show();
+                	$("#channels").hide();
+                	$("#bitdepth").hide();
+                	$("#samplerate").hide();
+                } else {
+                	console.log("streambased");
+                	$("#filename").hide();
+                	$("#channels").show();
+                	$("#bitdepth").show();
+                	$("#samplerate").show();                	
+                }
+            });
+        },
         label: function() {
             return this.name || "speakerpi output node";
         }
