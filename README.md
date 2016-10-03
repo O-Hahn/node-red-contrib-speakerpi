@@ -7,7 +7,7 @@ This node is designed to work on Raspberry Pi and will be good in using with Wat
 
 Run the following command in the root directory of your Node-RED install or home directory (usually ~/.node-red).
 
-        npm install node-red-node-speakerpi
+        npm install node-red-contrib-speakerpi
 
 ### Additionally you have to install on the Raspberry Pi 
 sudo apt-get update 
