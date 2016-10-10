@@ -11,6 +11,7 @@ Run the following command in the root directory of your Node-RED install or home
 
 ### Additionally you have to install on the Raspberry Pi 
 sudo apt-get update 
+
 sudo apt-get install libasound2-dev
 
 ### sound set to Analog output
@@ -22,6 +23,8 @@ amixer cset numid=3 2
 ### sound set volume
 alsamixer 
 
+### Additional Info
+This node runs fine with the NodeJS 4.x LTS and NPM v2.
 
 ##Usage
 

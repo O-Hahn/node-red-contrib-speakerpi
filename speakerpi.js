@@ -39,7 +39,7 @@ function speakOutput(outStream, speakerConfig) {
 	speaker.write(rs);
 	
     // rs.pipe(speaker);
-	console.log("SpeakerPi (log): Sound is send to speaker.");	
+	// console.log("SpeakerPi (log): Sound is send to speaker.");	
 	    
     return;
 };
@@ -107,21 +107,21 @@ function speakOutputFile(outStream,optfile) {
 	            	return;
 	            }
 	        } else {
-	        	console.log("SpeakerPi (log): File " + filename + " written.");
+	        	// console.log("SpeakerPi (log): File " + filename + " written.");
 	        	
 	        	// speak out the streamed file or the standard file 
 	           	var speak = new Sound(filename);
 	           	speak.play();
 	           	
 	           	speak.on('complete', function () {
-	           		console.log('SpeakerPi (log): Done with playback!');
+	           		// console.log('SpeakerPi (log): Done with playback!');
 
 	           		// delete file - if payload given and tempfile is not needed anymore
 	           		if (tempfile) {
 	           	   		fs.remove(filename, function(err) {
 	                 		  if (err) return console.error("SpeakerPi (err): "+ err);
 	                 		  
-	                 		  console.log("SpeakerPi (log): remove success!")
+	                 		  // console.log("SpeakerPi (log): remove success!")
 	                 		});	           				           			
 	           		}
 	           	});
