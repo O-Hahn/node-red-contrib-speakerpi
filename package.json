@@ -20,8 +20,7 @@
 	 	"speaker": "latest",
 	 	"node-aplay":"latest",
 	 	"fs-extra":"latest",
-	 	"node-uuid":"latest",
-	 	"serialport":"2.0.*"
+	 	"node-uuid":"latest"
   	 },
      "node-red" : {
         "nodes": {

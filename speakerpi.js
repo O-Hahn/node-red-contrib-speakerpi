@@ -138,7 +138,6 @@ module.exports = function(RED) {
     
     var settings = RED.settings;
     var events = require("events");
-    var serialp = require("serialport");
     var bufMaxSize = 32768;  // Max serial buffer size, for inputs...
 
     // SpeakerPI Output Node
