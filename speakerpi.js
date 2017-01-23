@@ -48,9 +48,11 @@ function speakOutputFile(outStream,optfile) {
 	var Sound = require('node-aplay');
  	var fs = require("fs-extra");
  	var os = require("os");
- 	var uuid = require('uuid/v4');
+ 	var uuidv4 = require('uuid/v4');
  	var tempfile = false;
  	
+	var uuid = uuidv4();
+
 	var localdir = __dirname;
  	var filename = "";
   	
@@ -162,6 +164,15 @@ module.exports = function(RED) {
 
             // check if streambased or filebased 
 			if (node.choose == "filebased") {
+				var fn;
+				if (node.isplaying) {
+					node.error("SpeakerPI: already playing");
+				} else {
+					node.isplaying = true;
+					speakOutputFile(msg.speech,fn);	
+					node.isplaying = false;
+				}
+			} else if (node.choose == "givenfile") {
 				var fn = msg.filename || node.filename;
 				if (node.isplaying) {
 					node.error("SpeakerPI: already playing");

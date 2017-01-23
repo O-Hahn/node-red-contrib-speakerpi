@@ -10,8 +10,6 @@ Run the following command in the root directory of your Node-RED install or home
         npm install node-red-contrib-speakerpi
 
 ### Additionally you have to install on the Raspberry Pi 
-sudo apt-get update 
-
 sudo apt-get install libasound2-dev
 
 ### sound set to Analog output
@@ -33,7 +31,9 @@ Provides a sound-node for sending out a sound to the connected speaker. There ar
 ### Filebased
 Within the filebased mode the buffer is dumped to an file and the Raspberry Pi Player APLAY is called in background with this file. This brings out best quality with minimum resources needed from the play.
 The msg.speech should contain the WAV/OGG file (mybe directly from Text2Speach Service from Bluemix). This will be dumped into a file and after playing the temporary file it will be deleted. 
-You can also play own pregiven files by using msg.filename (like /path/filename.wav).
+
+### Givenfile
+You can also play own pregiven files by using msg.filename (like /path/filename.wav). The msg.choose has then set to "givenfile" and msg.filename to the name with path.
 
 ### Streambased
 The streambased mode is for streaming directly the buffer into a speaker framework (using node-speaker) which is from the quality perspective not very good. 

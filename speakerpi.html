@@ -22,6 +22,7 @@
     <div class="form-row node-input-choose">
          <label for="node-input-choose"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.choose"></span></label>
 	     <select id="node-input-choose">
+            <option value="givenfile">Given File</option>
             <option value="filebased">File based</option>
             <option value="streambased">Stream based</option>
         </select>
@@ -59,10 +60,11 @@
 
 <script type="text/x-red" data-help-name="speakerpi-output">
     <p>This Speaker Output Node for Raspberry PI give the possibility to play Sound-Objects direct through the configured output (HDMI or Chinch). </p>
+    <p>In <b>msg.choose</b> could be changed if needed to "givenfile", "filebased" or "streambased" </p>
+    <p>When you choose "givenfile" you have to specify an filename or <b>msg.filename</b>. Otherwise <b>msg.speech</b> must be set with the content (wav file).</p>   
     <p>In <b>msg.speech</b> could be a given object with a WAV or OGG object - which should be played.  </p>
     <p>When you set a msg.speech with an playable object <b>msg.channels</b>, <b>msg.bitdepth</b>, <b>msg.samplerate </b> can be given if needed. </p>
-    <p>In <b>msg.choose</b> could be changed if needed to "filebased" or "streambased" </p>
-    <p>By setting <b>msg.filename</b> you can also give a <b>/path/filename.wav</b> to an existing file which should be played or empty when msg.speach should be used.  </p>
+    <p>By setting <b>msg.filename</b> you can also give a <b>/path/filename.wav</b> to an existing file which should be played.  </p>
 </script>
 
 <script type="text/javascript">
@@ -86,10 +88,16 @@
                 console.log(choose);
                 if (choose == "filebased") {
                 	console.log("filebased");
-                	$("#filename").show();
+                	$("#filename").hide();
                 	$("#channels").hide();
                 	$("#bitdepth").hide();
                 	$("#samplerate").hide();
+                } else if (choose == "givenfile") {
+                	console.log("givenfile");
+                	$("#filename").show();
+                	$("#channels").hide();
+                	$("#bitdepth").hide();
+                	$("#samplerate").hide();                    
                 } else {
                 	console.log("streambased");
                 	$("#filename").hide();
