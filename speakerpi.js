@@ -48,10 +48,10 @@ function speakOutputFile(outStream,optfile) {
 	var Sound = require('node-aplay');
  	var fs = require("fs-extra");
  	var os = require("os");
- 	var uuid = require('node-uuid');
+ 	var uuid = require('uuid/v4');
  	var tempfile = false;
  	
- 	var uuid = uuid.v4();
+	var localdir = __dirname;
  	var filename = "";
   	
 	var data = outStream;
@@ -71,7 +71,7 @@ function speakOutputFile(outStream,optfile) {
 
     } else {
     	// create temp file
-    	filename = "/home/pi/.node-red/speak/speak-" + uuid +".wav";              	
+    	filename = localdir + "speak-" + uuid +".wav";              	
 		tempfile = true;
 
      	if ((typeof data === "object") && (!Buffer.isBuffer(data))) {

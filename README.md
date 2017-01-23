@@ -31,16 +31,16 @@ This node runs fine with the NodeJS 4.x LTS and NPM v2.
 Provides a sound-node for sending out a sound to the connected speaker. There are two modes - filebased and streambased. 
 
 ### Filebased
-Within the filebased mode the Raspberry Pi Player APLAY is issued with a file. This brings out best quality with minimum resources needed from the play.
-If the msg.speech is given as an input it will be dumped into a file and after playing the temporary file it will be deleted. 
-By defining msg.predefsound (set of predefined soundfiles within the package) or setting a msg.filename which includes /path/filename.wav - this will be played.
+Within the filebased mode the buffer is dumped to an file and the Raspberry Pi Player APLAY is called in background with this file. This brings out best quality with minimum resources needed from the play.
+The msg.speech should contain the WAV/OGG file (mybe directly from Text2Speach Service from Bluemix). This will be dumped into a file and after playing the temporary file it will be deleted. 
+You can also play own pregiven files by using msg.filename (like /path/filename.wav).
 
 ### Streambased
-The streambased mode is for streaming directly the buffer into a speaker framework (using node-speaker) 
+The streambased mode is for streaming directly the buffer into a speaker framework (using node-speaker) which is from the quality perspective not very good. 
 
 ### speakerPi output node
 
-The msg.speech as an input contains the WAV/OGG .
+If msg.speech as an input contains the WAV/OGG .
 
 The node also needs a defined sound configuration which contains channels (1 or 2), the bitdepth (8 or 16) and the samplerate (22050 or 44100) set in the node or in the msg.speakerConfig for the sound in msg.speech. 
 
@@ -51,4 +51,3 @@ speakerConfig = {
 	samplerate: 22050
 	 }
 ```
-
