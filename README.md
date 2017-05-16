@@ -22,9 +22,9 @@ amixer cset numid=3 2
 alsamixer 
 
 ### Additional Info
-This node runs fine with the NodeJS 4.x LTS and NPM v2.
+This node runs fine with the NodeJS 6.x LTS and NPM v3.
 
-##Usage
+## Usage
 
 Provides a sound-node for sending out a sound to the connected speaker. There are two modes - filebased and streambased. 
 
@@ -42,7 +42,7 @@ The streambased mode is for streaming directly the buffer into a speaker framewo
 
 If msg.speech as an input contains the WAV/OGG .
 
-The node also needs a defined sound configuration which contains channels (1 or 2), the bitdepth (8 or 16) and the samplerate (22050 or 44100) set in the node or in the msg.speakerConfig for the sound in msg.speech. 
+The node also needs a defined sound configuration which contains channels (1 or 2), the bitdepth (8 or 16) and the samplerate (11025, 22050 or 44100) set in the node or in the msg.speakerConfig for the sound in msg.speech. 
 
 ```
 speakerConfig = { 

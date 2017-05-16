@@ -48,6 +48,7 @@
     <div id="samplerate" class="form-row node-input-samplerate">
          <label for="node-input-samplerate"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.samplerate"></span></label>
 	     <select id="node-input-samplerate">
+            <option value="11025">11025 Hz</option>
             <option value="22050">22050 Hz</option>
             <option value="44100">44100 Hz</option>
         </select>
@@ -76,7 +77,7 @@
             filename: {value:"", required:false},
             channels: {value:"1", required:true},
             bitdepth: {value:"8", required:true},
-            samplerate: {value:"22050", required:true},
+            samplerate: {value:"11025", required:true},
             name: {value:""}
         },
         inputs:1,
