@@ -13,3 +13,6 @@ amixer cset numid=3 2
 # sound set louder
 alsamixer 
 
+# store settings
+sudo alsactl store
+

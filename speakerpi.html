@@ -48,9 +48,12 @@
     <div id="samplerate" class="form-row node-input-samplerate">
          <label for="node-input-samplerate"><i class="fa fa-music"></i> <span data-i18n="speakerpi.label.samplerate"></span></label>
 	     <select id="node-input-samplerate">
-            <option value="11025">11025 Hz</option>
-            <option value="22050">22050 Hz</option>
-            <option value="44100">44100 Hz</option>
+            <option value="11025">11,025 Hz</option>
+            <option value="22050">22,050 Hz</option>
+            <option value="44100">44,100 Hz</option>
+            <option value="48000">48,000 Hz</option>
+            <option value="96000">96,000 Hz</option>
+            <option value="192000">192,000 Hz</option>
         </select>
     </div>
     <div class="form-row">
@@ -76,12 +79,12 @@
             choose: {value:"filebased", required:true},
             filename: {value:"", required:false},
             channels: {value:"1", required:true},
-            bitdepth: {value:"8", required:true},
-            samplerate: {value:"11025", required:true},
+            bitdepth: {value:"16", required:true},
+            samplerate: {value:"22050", required:true},
             name: {value:""}
         },
         inputs:1,
-        outputs:0,
+        outputs:1,
         icon: "bridge.png",
         oneditprepare: function() {
             $("#node-input-choose").change(function() {
@@ -113,5 +116,5 @@
         }
     });
 </script>
-<!-- End of speakerpi Pi Output Node -->
 
+<!-- End of speakerpi Pi Output Node -->

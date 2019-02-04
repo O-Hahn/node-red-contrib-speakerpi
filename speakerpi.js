@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /**
  * Copyright 2015 IBM Corp.
  *
@@ -18,86 +19,107 @@
 
 
 // give the stream out on the audio 
-function speakOutput(outStream, speakerConfig) {
+function speakOutput(outStream, speakerConfig, node, msg) {
 	// include needed libs
-	var Readable = require('stream').Readable;
 	var Speaker = require("speaker");
+	var Readable = require("stream").Readable;
 	
 	// Create the Speaker instance
 	var speaker = new Speaker({
-	  channels: speakerConfig.channels,          // 2 channels
-	  bitDepth: speakerConfig.bitdepth,          // 16-bit samples
-	  sampleRate: speakerConfig.samplerate       // 44,100 Hz sample rate
+		channels: speakerConfig.channels,          // 2 channels
+		bitDepth: speakerConfig.bitdepth,          // 16-bit samples
+		sampleRate: speakerConfig.samplerate       // 44,100 Hz sample rate
 	});
+ 
+	if (outStream && Buffer.isBuffer(outStream)) {		
+		// move it to a readable stream 
+		var sbuf = new Readable();
+		sbuf.push(outStream);
+		sbuf.push(null);   // mark the end of the buffer which ends the stream
+		
+		sbuf.on("readable", function () {
+			// send buffer to speaker 
+			sbuf.pipe(speaker);
+			//speaker.write(sbuf);
+		
+			speaker.on("finish", function () {
+				msg.player = "done";
+				node.send(msg);
+				console.log("SpeakerPi (log): Done with playback!");
+			});
 
-	// copy buffer to presave outStream and make buffer streamable 
-	var rs = new Readable;
-	rs.push(outStream);
-	rs.push(null);
-	
-    // send buffer to speaker 
-	speaker.write(rs);
-	
-    // rs.pipe(speaker);
-	// console.log("SpeakerPi (log): Sound is send to speaker.");	
-	    
-    return;
-};
+		});
 
-function speakOutputFile(outStream,optfile) {
-	var Sound = require('node-aplay');
- 	var fs = require("fs-extra");
- 	var os = require("os");
- 	var uuidv4 = require('uuid/v4');
- 	var tempfile = false;
- 	
+
+	} else {
+		msg.player = "error";
+		node.send(msg);
+		console.error("SpeakerPi (err): Object is not a buffer");	
+	}
+   
+	return;
+}
+
+function speakOutputFile(outStream,optfile,node,msg) {
+	var Sound = require("node-aplay");
+	var fs = require("fs-extra");
+	var os = require("os");
+	var uuidv4 = require("uuid/v4");
+	var tempfile = false;
+
 	var uuid = uuidv4();
 
 	var localdir = __dirname;
- 	var filename = "";
-  	
+	var filename = "";
+
 	var data = outStream;
- 	
- 	// define the standard sounds if set or temp filename
-    if (optfile) {
+
+	// define the standard sounds if set or temp filename
+	if (optfile) {
 		filename = optfile;
 		tempfile = false;
 		
- 		// speak out the streamed file or the standard file 
- 	   	var speak = new Sound(filename);
- 	   	speak.play();
- 	   	
- 	   	speak.on('complete', function () {
- 	   		console.log('SpeakerPi (log): Done with playback!');
- 	   	});
+		// speak out the streamed file or the standard file 
+		var speak = new Sound(filename);
+		speak.play();
 
-    } else {
-    	// create temp file
-    	filename = localdir + "speak-" + uuid +".wav";              	
+		speak.on("complete", function () {
+			msg.player = "done";
+			node.send(msg);
+			console.log("SpeakerPi (log): Done with playback!");
+		});
+
+	} else {
+		// create temp file
+		filename = localdir + "speak-" + uuid +".wav";              	
 		tempfile = true;
 
-     	if ((typeof data === "object") && (!Buffer.isBuffer(data))) {
-			 data = JSON.stringify(data);
+		if ((typeof data === "object") && (!Buffer.isBuffer(data))) {
+			data = JSON.stringify(data);
 		}
- 	   if (typeof data === "boolean") { data = data.toString(); }
-	   if (typeof data === "number") { data = data.toString(); }
-	   if (!Buffer.isBuffer(data)) { data += os.EOL; }
-	        
-	   data = new Buffer(data);
-	         
-	    // using "binary" not {encoding:"binary"} to be 0.8 compatible for a while
-	    fs.writeFile(filename, data, "binary", function (err) {
+		if (typeof data === "boolean") { data = data.toString(); }
+		if (typeof data === "number") { data = data.toString(); }
+		if (!Buffer.isBuffer(data)) { data += os.EOL; }
+
+		data = new Buffer(data);
+
+		// using "binary" not {encoding:"binary"} to be 0.8 compatible for a while
+		fs.writeFile(filename, data, "binary", function (err) {
 	        if (err) {
 	            if (err.code === "ENOENT") {
 	                fs.ensureFile(filename, function (err) {
 	                    if (err) { 
-	                    	console.error("SpeakerPi (err): File "+ filename + " could not be created");
+							msg.player = "error";
+							node.send(msg);
+							console.error("SpeakerPi (err): File "+ filename + " could not be created");
 	                    	return;
 	                    }
 	                    else {
 	                        fs.writeFile(filename, data, "binary", function (err) {
 	                            if (err) { 
-	                            	console.error("SpeakerPi (err): File " + filename + " could not be written to");
+									msg.player = "error";
+									node.send(msg);
+									console.error("SpeakerPi (err): File " + filename + " could not be written to");
 	                            	return;
 	                            	}
 	                        });
@@ -105,6 +127,9 @@ function speakOutputFile(outStream,optfile) {
 	                });
 	            }
 	            else { 
+					msg.player = "error";
+					node.send(msg);
+
 	            	console.error("SpeakerPi (err): error writing " + err);
 	            	return;
 	            }
@@ -115,39 +140,41 @@ function speakOutputFile(outStream,optfile) {
 	           	var speak = new Sound(filename);
 	           	speak.play();
 	           	
-	           	speak.on('complete', function () {
+	           	speak.on("complete", function () {
 	           		// console.log('SpeakerPi (log): Done with playback!');
 
 	           		// delete file - if payload given and tempfile is not needed anymore
 	           		if (tempfile) {
 	           	   		fs.remove(filename, function(err) {
-	                 		  if (err) return console.error("SpeakerPi (err): "+ err);
+							if (err) return console.error("SpeakerPi (err): "+ err);
 	                 		  
-	                 		  // console.log("SpeakerPi (log): remove success!")
-	                 		});	           				           			
-	           		}
-	           	});
+							// console.log("SpeakerPi (log): remove success!")
+						});	           				           			
+					}
+					msg.player = "done";
+					node.send(msg);
+		  		 });
 	        }
 	    });
-    }
+	}
     
- 	return;
-};
+	return;
+}
 
 
 module.exports = function(RED) {
-    "use strict";
+	"use strict";
     
-    var settings = RED.settings;
-    var events = require("events");
-    var bufMaxSize = 32768;  // Max serial buffer size, for inputs...
+	var settings = RED.settings;
+	var events = require("events");
+	var bufMaxSize = 32768;  // Max serial buffer size, for inputs...
 
-    // SpeakerPI Output Node
-    function SpeakerPiOutputNode(config) {
-    	// Create this node
-        RED.nodes.createNode(this,config);
+	// SpeakerPI Output Node
+	function SpeakerPiOutputNode(config) {
+		// Create this node
+		RED.nodes.createNode(this,config);
         
-        // set parameters and save locally 
+		// set parameters and save locally 
 		this.channels =  config.channels;
 		this.bitdepth =  config.bitdepth;
 		this.samplerate =  config.samplerate;
@@ -158,18 +185,18 @@ module.exports = function(RED) {
 
 		var node = this;
 		
-        // if there is an new input
-        node.on("input",function(msg) {
-            node.status({fill:"green",shape:"dot",text:"node-red:common.status.connected"});
+		// if there is an new input
+		node.on("input",function(msg) {
+			node.status({fill:"green",shape:"dot",text:"node-red:common.status.connected"});
 
-            // check if streambased or filebased 
+			// check if streambased or filebased 
 			if (node.choose == "filebased") {
 				var fn;
 				if (node.isplaying) {
 					node.error("SpeakerPI: already playing");
 				} else {
 					node.isplaying = true;
-					speakOutputFile(msg.speech,fn);	
+					speakOutputFile(msg.speech,fn, node, msg);	
 					node.isplaying = false;
 				}
 			} else if (node.choose == "givenfile") {
@@ -178,42 +205,48 @@ module.exports = function(RED) {
 					node.error("SpeakerPI: already playing");
 				} else {
 					node.isplaying = true;
-					speakOutputFile(msg.speech,fn);	
+					speakOutputFile(msg.speech,fn, node, msg);	
 					node.isplaying = false;
 				}
 			} else {				
 				if (msg.speech) {
 					var speakerConfig = {
-							channels: msg.channels || node.channels,          	// 2 channels
-							bitdepth: msg.bitdepth || node.bitdepth,          	// 16-bit samples
-							samplesate: msg.samplerate || node.samplerate       // 44,100 Hz sample rate
-						};
-					speakOutput(msg.speech, speakerConfig);
+						channels: msg.channels || node.channels,          	// 2 channels
+						bitdepth: msg.bitdepth || node.bitdepth,          	// 16-bit samples
+						samplerate: msg.samplerate || node.samplerate       // 44,100 Hz sample rate
+					};
+					if (node.isplaying) {
+						node.error("SpeakerPI: already playing");
 					} else {
-						node.error("SpeakerPI: No msg.speech object found")
-						}
+						node.isplaying = true;
+						speakOutput(msg.speech, speakerConfig, node, msg);
+						node.isplaying = false;
+					}
+				} else {
+					node.error("SpeakerPI: No msg.speech object found");
+				}
 			}
 			
 			// check if speech is filled or standard-sound given
-            node.status({fill:"green",shape:"ring",text:"node-red:common.status.connected"});
-        });
+			node.status({fill:"green",shape:"ring",text:"node-red:common.status.connected"});
+		});
         
-        // SpeakerPi is ready
-        node.on('ready', function() {
-            node.status({fill:"green",shape:"ring",text:"node-red:common.status.connected"});
-        });
+		// SpeakerPi is ready
+		node.on("ready", function() {
+			node.status({fill:"green",shape:"ring",text:"node-red:common.status.connected"});
+		});
         
-        // SpeakerPi is closed
-        node.on('closed', function() {
-            node.status({fill:"red",shape:"ring",text:"node-red:common.status.not-connected"});
-        });
+		// SpeakerPi is closed
+		node.on("closed", function() {
+			node.status({fill:"red",shape:"ring",text:"node-red:common.status.not-connected"});
+		});
             
-        // SpeakerPi has a close 
-        node.on("close", function(done) {
-        	node.closing = true;
-            done();
-        });
-    }
+		// SpeakerPi has a close 
+		node.on("close", function(done) {
+			this.closing = true;
+			done();
+		});
+	}
 	RED.nodes.registerType("speakerpi-output",SpeakerPiOutputNode);
 
-}
+};

@@ -11,7 +11,10 @@
             "filename": "File Name",
             "none": "none"
         },
-       "errors": {
+        "options" : {
+
+        },
+        "errors": {
             "missing-conf": "missing serial config",
             "serial-port": "serial port",
             "error": "serial port __port__ error: __error__",
