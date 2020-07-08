@@ -64,7 +64,7 @@ function speakOutputFile(outStream,optfile,node,msg) {
 	var Sound = require("node-aplay");
 	var fs = require("fs-extra");
 	var os = require("os");
-	var uuidv4 = require("uuid/v4");
+	const { v4: uuidv4 } = require('uuid');
 	var tempfile = false;
 
 	var uuid = uuidv4();

@@ -62,4 +62,4 @@ The node also needs a defined sound configuration which contains channels (1 or 
 ```
 
 ### Additional Info
-This node runs fine now with the NodeJS 8.x LTS, NPM v6 and NodeRed v0.19.
+This node runs fine now with the NodeJS 12.x LTS, NPM v6 and NodeRed v1.1.
